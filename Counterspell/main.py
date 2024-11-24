@@ -105,12 +105,28 @@ def draw_text(text, color, x, y):
     screen.blit(label, (x, y))
 
 def menu():
-    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-    background_image = pygame.image.load("assets/intro.png").convert()
-    background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
-    pygame.display.update()
-    if pygame.KEYDOWN:
-        return True
+    # Load and scale background image for the menu
+    menu_background = pygame.image.load("assets/intro.png").convert()
+    menu_background = pygame.transform.scale(menu_background, (WIDTH, HEIGHT))
+
+    running = True
+    while running:
+        # Draw the menu background
+        screen.blit(menu_background, (0, 0))
+        pygame.display.flip()
+
+        # Handle events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:  # Start the game
+                    return  # Exit the menu and continue to the game
+                if event.key == pygame.K_ESCAPE:  # Quit the game
+                    pygame.quit()
+                    sys.exit()
+
 
 def game_over_screen():
     running = True
@@ -398,8 +414,6 @@ def main():
     while True:
         pygame.mixer.music.load('assets/mp.wav')
         pygame.mixer.music.play(-1)
-
-        menu()
         # Reset the game to its initial state
         reset_game()
 
